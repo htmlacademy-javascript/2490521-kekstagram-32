@@ -89,9 +89,9 @@ const createRandomIdFromRangeGenerator = (min, max) => {
   };
 };
 
-const postURL = createRandomIdFromRangeGenerator(1, 25);
+const getRandomPostURL = createRandomIdFromRangeGenerator(1, 25);
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-const randomCommentID = createRandomIdFromRangeGenerator (1, 1000);
+const getRandomCommentID = createRandomIdFromRangeGenerator (1, 1000);
 
 //Генерация чисел по порядку
 let currentNumberID = 0;
@@ -104,7 +104,7 @@ const createCurrentNumber = () => {
 
 
 //Генерация случайного количества сообщений комментария
-const generateCommentMessage = () => {
+const createCommentMessage = () => {
   const numberOfMessage = getRandomInteger(1,2);
   let message;
   for (let i = 1; i <= numberOfMessage; i++) {
@@ -120,9 +120,9 @@ const createRandomComments = () => {
   const randomIntegerForComment = getRandomInteger(0, 30);
   for (let i = 0; i <= randomIntegerForComment ; i++) {
     const randomComment = {
-      commentID: randomCommentID(),
+      commentID: getRandomCommentID(),
       commentAvatar: `img/avatar-${ getRandomInteger(1, 6) }.svg`,
-      commentMessage: generateCommentMessage(),
+      commentMessage: createCommentMessage(),
       commentName: getRandomArrayElement(NAMES),
     };
     commentsObject.push(randomComment);
@@ -134,7 +134,7 @@ const createRandomComments = () => {
 //Реализация постов
 const createPost = () => ({
   id: createCurrentNumber(),
-  url: `photos/${ postURL() }.jpg`,
+  url: `photos/${ getRandomPostURL() }.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
   likes: getRandomInteger(15,200),
   comments: createRandomComments()
