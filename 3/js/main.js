@@ -61,20 +61,32 @@ const NAMES = [
   'Алена',
 ];
 
-const postURL = createRandomIdFromRangeGenerator(1, 25);
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-const postID = createCurrentNumber(1, 25);
+const MIN_URL_COUNT = 1;
+const MAX_URL_COUNT = 25;
+const MIN_COMMENT_ID_COUNT = 1;
+const MAX_COMMENT_ID_COUNT = 1000;
+const POST_COUNT = 25;
+const MIN_COMMENT_MESSAGE_COUNT = 1;
+const MAX_COMMENT_MESSAGE_COUNT = 2;
+const MIN_COMMENT_COUNT = 0;
+const MAX_COMMENT_COUNT = 30;
+const MIN_COMMENT_AVATAR_COUNT = 1;
+const MAX_COMMENT_AVATAR_COUNT = 6;
+const MIN_POST_LIKES_COUNT = 15;
+const MAX_POST_LIKES_COUNT = 200;
+
 //Генерация случайных чисел
-function getRandomInteger (min, max) {
+const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
 
   return Math.floor(result);
-}
+};
+
 
 //Генерация случайных чисел и проверка на уникальность
-function createRandomIdFromRangeGenerator (min, max) {
+const createRandomIdFromRangeGenerator = (min, max) => {
   const previousValues = [];
 
   return function () {
@@ -88,44 +100,58 @@ function createRandomIdFromRangeGenerator (min, max) {
     previousValues.push(currentValue);
     return currentValue;
   };
-}
+};
+
+const getRandomPostURL = createRandomIdFromRangeGenerator(MIN_URL_COUNT, MAX_URL_COUNT);
+const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+const getRandomCommentID = createRandomIdFromRangeGenerator (MIN_COMMENT_ID_COUNT, MAX_COMMENT_ID_COUNT);
 
 //Генерация чисел по порядку
 let currentNumberID = 0;
-function createCurrentNumber(min, max) {
+const createCurrentNumber = () => {
+  if (currentNumberID <= POST_COUNT) {
+    currentNumberID += 1;
+  }
+  return currentNumberID;
+};
 
-  return function () {
-    if (currentNumberID <= max) {
-      currentNumberID += 1;
-    }
-    return currentNumberID;
-  };
-}
+
+//Генерация случайного количества сообщений комментария
+const createCommentMessage = () => {
+  const numberOfMessage = getRandomInteger(MIN_COMMENT_MESSAGE_COUNT, MAX_COMMENT_MESSAGE_COUNT);
+  let message;
+  for (let i = 1; i <= numberOfMessage; i++) {
+    message = (i === 2) ? `${getRandomArrayElement(MESSAGES) } ${ getRandomArrayElement(MESSAGES)}` : getRandomArrayElement(MESSAGES);
+  }
+  return message;
+};
+
 
 //Генерация комментариев
-function createRandomComments () {
+const createRandomComments = () => {
   const commentsObject = [];
-  for (let i = 0; i <= getRandomInteger(0, 30); i++) {
+  const randomIntegerForComment = getRandomInteger(MIN_COMMENT_COUNT, MAX_COMMENT_COUNT);
+  for (let i = 0; i <= randomIntegerForComment ; i++) {
     const randomComment = {
-      commentID: getRandomInteger(1, 1000),
-      commentAvatar: `img/avatar-${ getRandomInteger(1, 6) }.svg`,
-      commentMessage: getRandomArrayElement(MESSAGES),
+      commentID: getRandomCommentID(),
+      commentAvatar: `img/avatar-${ getRandomInteger(MIN_COMMENT_AVATAR_COUNT, MAX_COMMENT_AVATAR_COUNT) }.svg`,
+      commentMessage: createCommentMessage(),
       commentName: getRandomArrayElement(NAMES),
     };
     commentsObject.push(randomComment);
   }
   return commentsObject;
-}
+};
 
 
 //Реализация постов
 const createPost = () => ({
-  id: postID(),
-  url: `photos/${ postURL() }.jpg`,
+  id: createCurrentNumber(),
+  url: `photos/${ getRandomPostURL() }.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
-  likes: getRandomInteger(15,200),
+  likes: getRandomInteger(MIN_POST_LIKES_COUNT, MAX_POST_LIKES_COUNT),
   comments: createRandomComments()
 });
 
-const finalPost = Array.from({length: 25}, createPost);
-console.log(finalPost);
+const finalPosts = Array.from({length: POST_COUNT}, createPost);
+console.log(finalPosts);
