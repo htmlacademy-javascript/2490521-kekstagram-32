@@ -61,20 +61,19 @@ const NAMES = [
   'Алена',
 ];
 
-const postURL = createRandomIdFromRangeGenerator(1, 25);
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-const postID = createCurrentNumber(1, 25);
+
 //Генерация случайных чисел
-function getRandomInteger (min, max) {
+const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
 
   return Math.floor(result);
-}
+};
+
 
 //Генерация случайных чисел и проверка на уникальность
-function createRandomIdFromRangeGenerator (min, max) {
+const createRandomIdFromRangeGenerator = (min, max) => {
   const previousValues = [];
 
   return function () {
@@ -88,39 +87,53 @@ function createRandomIdFromRangeGenerator (min, max) {
     previousValues.push(currentValue);
     return currentValue;
   };
-}
+};
+
+const postURL = createRandomIdFromRangeGenerator(1, 25);
+const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+const randomCommentID = createRandomIdFromRangeGenerator (1, 1000);
 
 //Генерация чисел по порядку
 let currentNumberID = 0;
-function createCurrentNumber(min, max) {
+const createCurrentNumber = () => {
+  if (currentNumberID <= 25) {
+    currentNumberID += 1;
+  }
+  return currentNumberID;
+};
 
-  return function () {
-    if (currentNumberID <= max) {
-      currentNumberID += 1;
-    }
-    return currentNumberID;
-  };
-}
+
+//Генерация случайного количества сообщений комментария
+const generateCommentMessage = () => {
+  const numberOfMessage = getRandomInteger(1,2);
+  let message;
+  for (let i = 1; i <= numberOfMessage; i++) {
+    message = (i === 2) ? `${getRandomArrayElement(MESSAGES) } ${ getRandomArrayElement(MESSAGES)}` : getRandomArrayElement(MESSAGES);
+  }
+  return message;
+};
+
 
 //Генерация комментариев
-function createRandomComments () {
+const createRandomComments = () => {
   const commentsObject = [];
-  for (let i = 0; i <= getRandomInteger(0, 30); i++) {
+  const randomIntegerForComment = getRandomInteger(0, 30);
+  for (let i = 0; i <= randomIntegerForComment ; i++) {
     const randomComment = {
-      commentID: getRandomInteger(1, 1000),
+      commentID: randomCommentID(),
       commentAvatar: `img/avatar-${ getRandomInteger(1, 6) }.svg`,
-      commentMessage: getRandomArrayElement(MESSAGES),
+      commentMessage: generateCommentMessage(),
       commentName: getRandomArrayElement(NAMES),
     };
     commentsObject.push(randomComment);
   }
   return commentsObject;
-}
+};
 
 
 //Реализация постов
 const createPost = () => ({
-  id: postID(),
+  id: createCurrentNumber(),
   url: `photos/${ postURL() }.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
   likes: getRandomInteger(15,200),
