@@ -5,16 +5,17 @@ const pictureItemTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const semilarPosts = finalPosts();
-const semilarPictureListFragment = document.createDocumentFragment();
+const similarPosts = finalPosts();
+const similarPictureListFragment = document.createDocumentFragment();
 
-semilarPosts.forEach(({post}) => {
+similarPosts.forEach(({url, description, comments, likes}) => {
   const pictureElement = pictureItemTemplate.cloneNode(true);
-  pictureElement.querySelector('picture__img').src = post.url;
-  pictureElement.querySelector('picture__img').alt = post.description;
-  pictureElement.querySelector('picture__comments').textContent = post.comments.length;
-  pictureElement.querySelector('picture__likes').textContent = post.likes;
-  semilarPictureListFragment.append(pictureElement);
+  pictureElement.querySelector('.picture__img').src = url;
+  pictureElement.querySelector('.picture__img').alt = description;
+  pictureElement.querySelector('.picture__comments').textContent = comments.length;
+  pictureElement.querySelector('.picture__likes').textContent = likes;
+  similarPictureListFragment.append(pictureElement);
 });
 
-pictureList.append(semilarPictureListFragment);
+pictureList.append(similarPictureListFragment);
+
