@@ -40,6 +40,7 @@ const renderCountComments = () => {
   commentCount.innerHTML = `${commentsList.querySelectorAll('.social__comment').length} из ${totalCommentsCount.textContent} комментариев`;
 };
 
+
 const renderComments = () => {
   createComments(currentComments);
   toggleCommentLoader();
