@@ -1,11 +1,13 @@
 import { isEscapeKey } from './util';
+import { resetScale } from './scale-image.js';
 
 const imgUploadInput = document.querySelector('.img-upload__input');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const buttonCloseForm = document.querySelector('.img-upload__cancel');
 const hashtagInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
-
+const uploadEffectLevel = document.querySelector('.img-upload__effect-level');
+const previewImage = document.querySelector('.img-upload__preview img');
 
 const isElementFocused = () =>
   document.activeElement === hashtagInput ||
@@ -24,6 +26,9 @@ const openModalForm = () => {
   document.addEventListener('keydown', onDocumenentKeydown);
   hashtagInput.value = '';
   commentInput.value = '';
+  resetScale();
+  uploadEffectLevel.classList.add('hidden');
+  previewImage.style.filter = '';
 };
 
 function closeModalForm () {
