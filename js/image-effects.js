@@ -2,6 +2,8 @@ const imageContainer = document.querySelector('.effect-level__slider');
 const previewImage = document.querySelector('.img-upload__preview img');
 const effectsList = document.querySelector('.effects__list');
 const uploadEffectLevel = document.querySelector('.img-upload__effect-level');
+const effectLevelValue = document.querySelector('.effect-level__value');
+
 
 noUiSlider.create(imageContainer, {
   range: {
@@ -12,6 +14,7 @@ noUiSlider.create(imageContainer, {
   step: 1,
   connect: 'lower',
 });
+
 
 effectsList.addEventListener('change', (evt) => {
   evt.preventDefault();
@@ -40,6 +43,7 @@ effectsList.addEventListener('change', (evt) => {
     });
     imageContainer.noUiSlider.on('update', () => {
       previewImage.style.filter = `brightness(${imageContainer.noUiSlider.get()})`;
+      effectLevelValue.value = imageContainer.noUiSlider.get();
     });
   }
   if (effectItem.value === 'phobos') {
@@ -53,6 +57,7 @@ effectsList.addEventListener('change', (evt) => {
     });
     imageContainer.noUiSlider.on('update', () => {
       previewImage.style.filter = `blur(${imageContainer.noUiSlider.get()}px)`;
+      effectLevelValue.value = imageContainer.noUiSlider.get();
     });
   }
   if (effectItem.value === 'marvin') {
@@ -66,6 +71,7 @@ effectsList.addEventListener('change', (evt) => {
     });
     imageContainer.noUiSlider.on('update', () => {
       previewImage.style.filter = `invert(${imageContainer.noUiSlider.get()}%)`;
+      effectLevelValue.value = imageContainer.noUiSlider.get();
     });
   }
   if (effectItem.value === 'sepia') {
@@ -79,6 +85,7 @@ effectsList.addEventListener('change', (evt) => {
     });
     imageContainer.noUiSlider.on('update', () => {
       previewImage.style.filter = `sepia(${imageContainer.noUiSlider.get()})`;
+      effectLevelValue.value = imageContainer.noUiSlider.get();
     });
   }
   if (effectItem.value === 'chrome') {
@@ -92,6 +99,7 @@ effectsList.addEventListener('change', (evt) => {
     });
     imageContainer.noUiSlider.on('update', () => {
       previewImage.style.filter = `grayscale(${imageContainer.noUiSlider.get()})`;
+      effectLevelValue.value = null;
     });
   }
 });

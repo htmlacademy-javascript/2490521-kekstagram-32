@@ -33,12 +33,43 @@ const checkHashtagsLength = (value) => {
   return hashtagInputValueElements.length <= 5;
 };
 
+const resetValidate = () => pristine.reset();
+
 pristine.addValidator(hashtagInput, checkHashtagsLength, 'Превышено количество хэштегов');
 pristine.addValidator(hashtagInput, checkValidateHashtag, 'Введён невалидный хэштег');
 pristine.addValidator(hashtagInput, checkHashtagsRepeat, 'Хэштеги повторяются');
 pristine.addValidator(commentInput, validateComment, 'Длина комментария должна быть не более 140 символов');
 
-uploadingModalForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.valide();
-});
+import { showUploadPictureError } from './render-alerts';
+import { closeUploadPictureError } from './render-alerts';
+import { showSuccessPopup } from './render-alerts';
+import { closeSuccessPopup } from './render-alerts';
+
+const setUserFormSubmit = (onSuccess) => {
+  uploadingModalForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      const formData = new FormData(evt.target);
+
+      fetch ('https://32.javascript.htmlacademy.pro/kekstagram',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      ).then(() => {
+        onSuccess();
+        showSuccessPopup();
+      })
+        .catch(() => {
+          showUploadPictureError();
+        })
+        .then(() => {
+          closeUploadPictureError();
+          closeSuccessPopup();
+        });
+    }
+  });
+};
+
+export {setUserFormSubmit, resetValidate};

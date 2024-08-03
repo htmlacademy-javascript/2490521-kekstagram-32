@@ -1,5 +1,5 @@
 import { isEscapeKey } from './util.js';
-import { similarPosts } from './pictures.js';
+
 
 const COMMENTS_START_NUMBER = 0;
 const COMMENTS_STEP_COUNT = 5;
@@ -52,7 +52,7 @@ const renderModalInfo = (targetPicture) => {
   likesCount.textContent = targetPicture.querySelector('.picture__likes').textContent;
   totalCommentsCount.textContent = targetPicture.querySelector('.picture__comments').textContent;
   socialCaption.textContent = targetPicture.querySelector('.picture__img').alt;
-  currentComments = similarPosts[targetPicture.dataset.id - 1].comments.slice();
+  //currentComments = similarThumbnails[targetPicture.dataset.id - 1].comments.slice();
   renderComments();
 };
 
@@ -91,4 +91,3 @@ userPictures.addEventListener('click', (evt) => {
 closeBigPicture.addEventListener('click', () => {
   closeUserModal();
 });
-
