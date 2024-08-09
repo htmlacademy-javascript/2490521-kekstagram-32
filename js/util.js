@@ -1,3 +1,4 @@
+
 //Генерация случайных чисел
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
