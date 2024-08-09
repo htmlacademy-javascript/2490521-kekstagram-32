@@ -1,4 +1,5 @@
 import { isEscapeKey } from './util.js';
+import { getSavedData } from './pictures.js';
 
 
 const COMMENTS_START_NUMBER = 0;
@@ -19,18 +20,19 @@ let currentComments;
 
 const createComments = (allComments) => {
   const newComments = allComments.splice(COMMENTS_START_NUMBER, COMMENTS_STEP_COUNT);
-  newComments.forEach(({commentAvatar, commentName, commentMessage}) => {
+  newComments.forEach(({avatar, name, message}) => {
     const commentElement = commentItemTemplate.cloneNode(true);
-    commentElement.querySelector('.social__picture').src = commentAvatar;
-    commentElement.querySelector('.social__picture').alt = commentName;
-    commentElement.querySelector('.social__text').textContent = commentMessage;
+    commentElement.querySelector('.social__picture').src = avatar;
+    commentElement.querySelector('.social__picture').alt = name;
+    commentElement.querySelector('.social__text').textContent = message;
     commentsList.appendChild(commentElement);
   });
+
 };
 
 const toggleCommentLoader = () => {
   if (currentComments.length === 0) {
-    commentsLoader.classList.toggle('hidden', true);
+    commentsLoader.classList.add('hidden');
   } else {
     commentsLoader.classList.remove('hidden');
   }
@@ -47,12 +49,14 @@ const renderComments = () => {
   renderCountComments();
 };
 
+
 const renderModalInfo = (targetPicture) => {
   mainPictureOfTheModal.src = targetPicture.querySelector('.picture__img').src;
   likesCount.textContent = targetPicture.querySelector('.picture__likes').textContent;
   totalCommentsCount.textContent = targetPicture.querySelector('.picture__comments').textContent;
   socialCaption.textContent = targetPicture.querySelector('.picture__img').alt;
-  //currentComments = similarThumbnails[targetPicture.dataset.id - 1].comments.slice();
+  const similarThumbnails = getSavedData();
+  currentComments = similarThumbnails[targetPicture.dataset.id].comments.slice();
   renderComments();
 };
 
@@ -91,3 +95,4 @@ userPictures.addEventListener('click', (evt) => {
 closeBigPicture.addEventListener('click', () => {
   closeUserModal();
 });
+

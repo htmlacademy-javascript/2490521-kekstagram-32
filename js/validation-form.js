@@ -1,3 +1,9 @@
+import { sendData } from './api';
+import { showUploadPictureError } from './render-alerts';
+import { closeUploadPictureError } from './render-alerts';
+import { showSuccessPopup, closeSuccessPopup, blockSubmitButton, unblockSubmitButton } from './render-alerts';
+
+
 const hashtagInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
 const uploadingModalForm = document.querySelector('.img-upload__form');
@@ -40,34 +46,25 @@ pristine.addValidator(hashtagInput, checkValidateHashtag, 'Введён нева
 pristine.addValidator(hashtagInput, checkHashtagsRepeat, 'Хэштеги повторяются');
 pristine.addValidator(commentInput, validateComment, 'Длина комментария должна быть не более 140 символов');
 
-import { showUploadPictureError } from './render-alerts';
-import { closeUploadPictureError } from './render-alerts';
-import { showSuccessPopup } from './render-alerts';
-import { closeSuccessPopup } from './render-alerts';
-
 const setUserFormSubmit = (onSuccess) => {
   uploadingModalForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
-      const formData = new FormData(evt.target);
-
-      fetch ('https://32.javascript.htmlacademy.pro/kekstagram',
-        {
-          method: 'POST',
-          body: formData,
-        },
-      ).then(() => {
-        onSuccess();
-        showSuccessPopup();
-      })
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+        .then(() => {
+          onSuccess();
+          showSuccessPopup();
+        })
         .catch(() => {
           showUploadPictureError();
         })
         .then(() => {
           closeUploadPictureError();
           closeSuccessPopup();
-        });
+        })
+        .finally(unblockSubmitButton);
     }
   });
 };
