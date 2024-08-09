@@ -14,6 +14,7 @@ import { getData } from './api.js';
 getData()
   .then((data) => {
     renderThumbnailsFromFilter(data);
+
   })
   .catch(() => {
     showDataError();
