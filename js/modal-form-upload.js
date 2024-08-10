@@ -16,7 +16,7 @@ const isElementFocused = () =>
   document.activeElement === hashtagInput ||
   document.activeElement === commentInput;
 
-const onDocumenentKeydown = (evt) => {
+const onDocumentKeydown = (evt) => {
   if (isEscapeKey && !isElementFocused()) {
     evt.preventDefault();
     closeModalForm();
@@ -31,14 +31,14 @@ const clearEffectValue = () => {
 const openModalForm = () => {
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumenentKeydown);
+  document.addEventListener('keydown', onDocumentKeydown);
   uploadEffectLevel.classList.add('hidden');
 };
 
 function closeModalForm () {
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumenentKeydown);
+  document.removeEventListener('keydown', onDocumentKeydown);
   previewImage.style.filter = '';
   resetValidate();
   resetScale();
@@ -53,4 +53,4 @@ imgUploadInput.addEventListener('change', () => {
 
 buttonCloseForm.addEventListener('click', closeModalForm);
 
-export {closeModalForm, onDocumenentKeydown};
+export {closeModalForm, onDocumentKeydown};

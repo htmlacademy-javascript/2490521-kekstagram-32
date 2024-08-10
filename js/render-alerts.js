@@ -1,6 +1,8 @@
 import { isEscapeKey } from './util.js';
 import { resetValidate } from './validation-form.js';
-import { onDocumenentKeydown } from './modal-form-upload.js';
+import { onDocumentKeydown } from './modal-form-upload.js';
+
+const TIMER_DISPLAY_ERROR = 5000;
 
 const uploadPictureError = document.querySelector('#error').content.querySelector('.error');
 const uploadPictureErrorButton = document.querySelector('#error').content.querySelector('.error__button');
@@ -14,55 +16,56 @@ const SubmitButtonText = {
   SENDING: 'Сохраняю...'
 };
 
-const onPopupEscKeydown = (evt) => {
-  if(isEscapeKey(evt)) {
-    uploadPictureError.remove();
-    successPopup.remove();
-  }
-};
-
-const windowListener = (evt) => {
+const onWindowEventListener = (evt) => {
   if (evt.target === uploadPictureError) {
     uploadPictureError.remove();
+    document.removeEventListener('keydown', onPopupEscKeydown);
+    document.removeEventListener('click', onWindowEventListener);
+    document.addEventListener('keydown', onDocumentKeydown);
+    resetValidate();
   }
   if (evt.target === successPopup) {
     successPopup.remove();
+    resetValidate();
   }
 };
 
-const showUploadPictureError = () => {
+function onPopupEscKeydown (evt) {
+  if(isEscapeKey(evt)) {
+    uploadPictureError.remove();
+    successPopup.remove();
+    document.removeEventListener('keydown', onPopupEscKeydown);
+    document.removeEventListener('click', onWindowEventListener);
+    document.addEventListener('keydown', onDocumentKeydown);
+    resetValidate();
+  }
+}
+
+const showErrorPopup = () => {
   document.body.append(uploadPictureError);
   document.addEventListener('keydown', onPopupEscKeydown);
-  document.addEventListener('click', windowListener);
-  document.removeEventListener('keydown', onDocumenentKeydown);
-};
-
-function closeUploadPictureError () {
+  document.addEventListener('click', onWindowEventListener);
+  document.removeEventListener('keydown', onDocumentKeydown);
   uploadPictureErrorButton.addEventListener('click', () => {
     uploadPictureError.remove();
-
   });
-  document.addEventListener('keydown', onDocumenentKeydown);///////////////////////////////////////////////////
-  resetValidate();
-}
+};
 
 const showSuccessPopup = () => {
   document.body.append(successPopup);
   document.addEventListener('keydown', onPopupEscKeydown);
-  document.addEventListener('click', windowListener);
-};
-
-const closeSuccessPopup = () => {
+  document.addEventListener('click', onWindowEventListener);
   successPopupButton.addEventListener('click', () => {
     successPopup.remove();
   });
 };
 
+
 const showDataError = () => {
   document.body.append(dataError);
   setTimeout(() => {
     dataError.remove();
-  }, 5000);
+  }, TIMER_DISPLAY_ERROR);
 };
 
 const blockSubmitButton = () => {
@@ -75,4 +78,4 @@ const unblockSubmitButton = () => {
   submitButton.textContent = SubmitButtonText.IDLE;
 };
 
-export {showUploadPictureError, closeUploadPictureError, showDataError, showSuccessPopup, closeSuccessPopup, blockSubmitButton, unblockSubmitButton};
+export {showErrorPopup, showDataError, showSuccessPopup, blockSubmitButton, unblockSubmitButton};
