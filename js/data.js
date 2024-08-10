@@ -79,9 +79,8 @@ const MAX_POST_LIKES_COUNT = 200;
 
 const getRandomPostURL = createRandomIdFromRangeGenerator(MIN_URL_COUNT, MAX_URL_COUNT);
 const getRandomCommentID = createRandomIdFromRangeGenerator (MIN_COMMENT_ID_COUNT, MAX_COMMENT_ID_COUNT);
-
-//Генерация чисел по порядку
 let currentNumberID = 0;
+
 const createCurrentNumber = () => {
   if (currentNumberID <= POST_COUNT) {
     currentNumberID += 1;
@@ -90,7 +89,6 @@ const createCurrentNumber = () => {
 };
 
 
-//Генерация случайного количества сообщений комментария
 const createCommentMessage = () => {
   const numberOfMessage = getRandomInteger(MIN_COMMENT_MESSAGE_COUNT, MAX_COMMENT_MESSAGE_COUNT);
   let message;
@@ -101,9 +99,8 @@ const createCommentMessage = () => {
 };
 
 
-//Генерация комментариев
 const createRandomComments = () => {
-  const commentsObject = [];
+  const commentsList = [];
   const randomIntegerForComment = getRandomInteger(MIN_COMMENT_COUNT, MAX_COMMENT_COUNT);
   for (let i = 0; i <= randomIntegerForComment ; i++) {
     const randomComment = {
@@ -112,13 +109,12 @@ const createRandomComments = () => {
       commentMessage: createCommentMessage(),
       commentName: getRandomArrayElement(NAMES),
     };
-    commentsObject.push(randomComment);
+    commentsList.push(randomComment);
   }
-  return commentsObject;
+  return commentsList;
 };
 
 
-//Реализация постов
 const createPost = () => ({
   id: createCurrentNumber(),
   url: `photos/${ getRandomPostURL() }.jpg`,
@@ -127,5 +123,5 @@ const createPost = () => ({
   comments: createRandomComments()
 });
 
-const finalPosts = () => Array.from({length: POST_COUNT}, createPost);
-export {finalPosts};
+const generateFinalPosts = () => Array.from({length: POST_COUNT}, createPost);
+export {generateFinalPosts};

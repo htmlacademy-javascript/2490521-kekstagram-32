@@ -1,7 +1,10 @@
 import { sendData } from './api';
-import { showUploadPictureError } from './render-alerts';
-import { closeUploadPictureError } from './render-alerts';
-import { showSuccessPopup, closeSuccessPopup, blockSubmitButton, unblockSubmitButton } from './render-alerts';
+import { showErrorPopup } from './render-alerts';
+import { showSuccessPopup, blockSubmitButton, unblockSubmitButton } from './render-alerts';
+
+const MAX_HASHTAG_COUNT = 5;
+const MAX_COMMENT_LENGTH = 140;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 
 
 const hashtagInput = document.querySelector('.text__hashtags');
@@ -20,7 +23,7 @@ const createCorrectValue = (value) => {
 
 const checkValidateHashtag = (value) => {
   createCorrectValue(value);
-  const hashtagValid = /^#[a-zа-яё0-9]{1,19}$/i;
+  const hashtagValid = VALID_SYMBOLS;
   return hashtagInputValueElements.every((hashtagItem) => hashtagItem.match(hashtagValid));
 };
 
@@ -32,11 +35,10 @@ const checkHashtagsRepeat = () => {
   return hashtagInputValueElements.length === uniqueHashtags.size;
 };
 
-const validateComment = (value) => value.length <= 140;
-
+const validateComment = (value) => value.length <= MAX_COMMENT_LENGTH;
 const checkHashtagsLength = (value) => {
   createCorrectValue(value);
-  return hashtagInputValueElements.length <= 5;
+  return hashtagInputValueElements.length <= MAX_HASHTAG_COUNT;
 };
 
 const resetValidate = () => pristine.reset();
@@ -58,11 +60,7 @@ const setUserFormSubmit = (onSuccess) => {
           showSuccessPopup();
         })
         .catch(() => {
-          showUploadPictureError();
-        })
-        .then(() => {
-          closeUploadPictureError();
-          closeSuccessPopup();
+          showErrorPopup();
         })
         .finally(unblockSubmitButton);
     }

@@ -1,17 +1,18 @@
+import { debounce } from './util.js';
+
+const TIMEOUT_DELAY = 500;
+const MAX_LENGTH_OF_UNIQE_THUMBNAILS = 10;
 
 const pictureList = document.querySelector('.pictures');
 const pictureItemTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
-
-
 const similarPictureListFragment = document.createDocumentFragment();
 const imageFilters = document.querySelector('.img-filters');
 const imageFiltersForm = imageFilters.querySelector('.img-filters__form');
 const defaultFilterButton = document.querySelector('#filter-default');
 const randomFilterButton = document.querySelector('#filter-random');
 const discussedFilterButton = document.querySelector('#filter-discussed');
-
 let savedData = [];
 
 const getSavedData = () => savedData;
@@ -32,7 +33,7 @@ const renderThumbnails = (similarThumbnails) => {
 
 const uniqueThumbnails = (similarThumbnails) => {
   const resultSet = new Set();
-  while (resultSet.size < 10) {
+  while (resultSet.size < MAX_LENGTH_OF_UNIQE_THUMBNAILS) {
     resultSet.add(similarThumbnails[Math.floor(Math.random() * similarThumbnails.length)]);
   }
   return Array.from(resultSet);
@@ -58,17 +59,19 @@ const setFilters = () => {
   }
 };
 
-const renderThumbnailsFromFilter = (data) => {
+const selectFilter = (evt) => {
+  const currentButton = evt.target;
+  pictureList.querySelectorAll('.picture').forEach((picture) => picture.remove());
+  imageFilters.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+  currentButton.classList.toggle('img-filters__button--active');
+  setFilters();
+};
+
+const initialRenderThumbnails = (data) => {
   savedData = data;
   renderThumbnails(savedData);
-  imageFiltersForm.addEventListener('click', (evt) => {
-    const currentButton = evt.target;
-    pictureList.querySelectorAll('.picture').forEach((picture) => picture.remove());
-    imageFilters.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-    currentButton.classList.toggle('img-filters__button--active');
-    setFilters();
-  });
+  imageFiltersForm.addEventListener('click', debounce((selectFilter), TIMEOUT_DELAY));
 };
 
 
-export {renderThumbnails, getSavedData, renderThumbnailsFromFilter};
+export {renderThumbnails, getSavedData, initialRenderThumbnails};

@@ -1,6 +1,4 @@
-
-//Генерация случайных чисел
-const getRandomInteger = (min, max) => {
+const generateRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
@@ -8,34 +6,32 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-
-//Генерация случайных чисел и проверка на уникальность
 const createRandomIdFromRangeGenerator = (min, max) => {
   const previousValues = [];
 
   return function () {
-    let currentValue = getRandomInteger(min, max);
+    let currentValue = generateRandomInteger(min, max);
     if (previousValues.length >= (max - min + 1)) {
       return null;
     }
     while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
+      currentValue = generateRandomInteger(min, max);
     }
     previousValues.push(currentValue);
     return currentValue;
   };
 };
 
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+const getRandomArrayElement = (elements) => elements[generateRandomInteger(0, elements.length - 1)];
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-function debounce (callback, timeoutDelay) {
+const debounce = (callback, timeoutDelay) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
-export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, debounce};
+export {generateRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, debounce};

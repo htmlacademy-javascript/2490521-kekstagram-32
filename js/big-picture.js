@@ -8,7 +8,7 @@ const COMMENTS_STEP_COUNT = 5;
 const bigPictureModule = document.querySelector('.big-picture');
 const userPictures = document.querySelector('.pictures');
 const mainPictureOfTheModal = bigPictureModule.querySelector('.big-picture__img img');
-const closeBigPicture = bigPictureModule.querySelector('.big-picture__cancel');
+const bigPictureModuleCloseButton = bigPictureModule.querySelector('.big-picture__cancel');
 const likesCount = bigPictureModule.querySelector('.likes-count');
 const totalCommentsCount = bigPictureModule.querySelector('.social__comment-shown-count');
 const socialCaption = bigPictureModule.querySelector('.social__caption');
@@ -92,7 +92,7 @@ userPictures.addEventListener('click', (evt) => {
   }
 });
 
-closeBigPicture.addEventListener('click', () => {
+bigPictureModuleCloseButton.addEventListener('click', () => {
   closeUserModal();
 });
 
