@@ -1,8 +1,9 @@
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-const fileChooser = document.querySelector('.img-upload__start input[type=file]');
-const preview = document.querySelector('.img-upload__preview img');
-const previewEffects = document.querySelectorAll('.effects__preview');
+const modalContainer = document.querySelector('.img-upload');
+const fileChooser = modalContainer.querySelector('.img-upload__start input[type=file]');
+const preview = modalContainer.querySelector('.img-upload__preview img');
+const previewEffects = modalContainer.querySelectorAll('.effects__preview');
 
 const setEffectsPreview = () => {
   previewEffects.forEach((effect) => {

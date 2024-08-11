@@ -2,15 +2,16 @@ import { isEscapeKey } from './util';
 import { resetScale } from './scale-image.js';
 import { resetValidate } from './validation-form.js';
 
-const imgUploadInput = document.querySelector('.img-upload__input');
-const imgUploadOverlay = document.querySelector('.img-upload__overlay');
-const buttonCloseForm = document.querySelector('.img-upload__cancel');
-const hashtagInput = document.querySelector('.text__hashtags');
-const commentInput = document.querySelector('.text__description');
-const uploadEffectLevel = document.querySelector('.img-upload__effect-level');
-const previewImage = document.querySelector('.img-upload__preview img');
-const radioButtons = document.querySelectorAll('input[type="radio"]');
-const effectLevelValue = document.querySelector('.effect-level__value');
+const modalContainer = document.querySelector('.img-upload');
+const imgUploadInput = modalContainer.querySelector('.img-upload__input');
+const imgUploadOverlay = modalContainer.querySelector('.img-upload__overlay');
+const buttonCloseForm = modalContainer.querySelector('.img-upload__cancel');
+const hashtagInput = modalContainer.querySelector('.text__hashtags');
+const commentInput = modalContainer.querySelector('.text__description');
+const uploadEffectLevel = modalContainer.querySelector('.img-upload__effect-level');
+const previewImage = modalContainer.querySelector('.img-upload__preview img');
+const radioButtons = modalContainer.querySelectorAll('input[type="radio"]');
+const effectLevelValue = modalContainer.querySelector('.effect-level__value');
 
 const isElementFocused = () =>
   document.activeElement === hashtagInput ||
@@ -45,6 +46,7 @@ function closeModalForm () {
   hashtagInput.value = '';
   commentInput.value = '';
   clearEffectValue();
+  imgUploadInput.value = '';
 }
 
 imgUploadInput.addEventListener('change', () => {
