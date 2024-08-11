@@ -3,10 +3,12 @@ const MAX_SCALE = 100;
 const MIN_SCALE = 25;
 const DEFAULT_SCALE = 100;
 
-const imageControlSmaller = document.querySelector('.scale__control--smaller');
-const imageControlBigger = document.querySelector('.scale__control--bigger');
-const previewImage = document.querySelector('.img-upload__preview img');
-const scaleImageInput = document.querySelector('.scale__control--value');
+const modalContainer = document.querySelector('.img-upload');
+const imageControlSmaller = modalContainer.querySelector('.scale__control--smaller');
+const imageControlBigger = modalContainer.querySelector('.scale__control--bigger');
+const scaleImageInput = modalContainer.querySelector('.scale__control--value');
+const previewImage = modalContainer.querySelector('.img-upload__preview img');
+
 
 const scaleImage = (value) => {
   previewImage.style.transform = `scale(${value / 100})`;
