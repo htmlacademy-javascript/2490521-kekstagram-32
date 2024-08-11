@@ -82,6 +82,7 @@ function closeUserModal () {
   bigPictureModule.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onUserModalEscKeydown);
+
 }
 
 userPictures.addEventListener('click', (evt) => {
